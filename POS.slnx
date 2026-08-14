@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Readme.txt" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/API/">
+    <Project Path="POS.API/POS.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Product/">
+    <Project Path="POS.Product.Application/POS.Product.Application.csproj" />
+    <Project Path="POS.Product.Domain/POS.Product.Domain.csproj" />
+    <Project Path="POS.Product.Infrastructure/POS.Product.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/" />
+  <Folder Name="/tests/" />
+</Solution>
