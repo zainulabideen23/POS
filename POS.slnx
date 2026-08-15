@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
     <File Path="Readme.txt" />
   </Folder>
   <Folder Name="/src/" />
@@ -7,6 +8,9 @@
     <Project Path="POS.API/POS.API.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Organization/">
+    <Project Path="POS.Tenant.Domain/POS.Organization.Domain.csproj" />
+  </Folder>
   <Folder Name="/src/Modules/Product/">
     <Project Path="POS.Product.Application/POS.Product.Application.csproj" />
     <Project Path="POS.Product.Domain/POS.Product.Domain.csproj" />
