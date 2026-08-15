@@ -7,6 +7,11 @@
     <Project Path="POS.API/POS.API.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Identity/">
+    <Project Path="POS.Identity.Application/POS.Identity.Application.csproj" Id="595b5194-9980-480e-a749-6743324f6d60" />
+    <Project Path="POS.Identity.Domain/POS.Identity.Domain.csproj" Id="b53f535e-4b4c-49c7-b245-e654cfeea91c" />
+    <Project Path="POS.Identity.Infrastructure/POS.Identity.Infrastructure.csproj" Id="1511aaaa-c159-4ec6-8856-06a1d0f238ff" />
+  </Folder>
   <Folder Name="/src/Modules/Product/">
     <Project Path="POS.Product.Application/POS.Product.Application.csproj" />
     <Project Path="POS.Product.Domain/POS.Product.Domain.csproj" />
