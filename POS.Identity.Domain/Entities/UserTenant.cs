@@ -11,7 +11,7 @@ namespace POS.Identity.Domain.Entities
         public ApplicationUser User { get; set; } = null!;
 
         public int TenantId { get; set; }
-         public Tenant Tenant { get; set; }
+        public Tenant Tenant { get; set; }
 
         public bool IsActive { get; set; }
         public DateTime JoinedAt { get; set; }

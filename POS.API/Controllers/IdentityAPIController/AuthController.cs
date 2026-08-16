@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using POS.Identity.Application.Interfaces;
 using POS.Identity.Application.DTOs;
 
-namespace POS.API.Controllers;
+namespace POS.API.Controllers.IdentityAPIController;
 
 [ApiController]
 [Route("api/identity/auth")]
