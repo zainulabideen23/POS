@@ -1,10 +1,10 @@
-﻿using POS.Product.Application.Interfaces.CategoryInterfaces;
-using POS.Product.Domain.Entities;
+﻿using POS.Product.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using POS.Product.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
+using POS.Product.Application.Interfaces;
 
 namespace POS.Product.Infrastructure.Repository
 {

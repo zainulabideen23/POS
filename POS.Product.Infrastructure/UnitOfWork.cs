@@ -1,4 +1,5 @@
 ﻿using POS.Product.Application.Interfaces;
+using POS.Product.Application.Interfaces.BrandInterfaces;
 using POS.Product.Application.Interfaces.CategoryInterfaces;
 using POS.Product.Infrastructure.Persistance;
 using System;
@@ -12,14 +13,17 @@ namespace POS.Product.Infrastructure
         private readonly ApplciationDbContext _db;
 
         public ICategoryRepository Categories { get; }
+        public IBrandRepository Brands { get; }
+
 
         public UnitOfWork(
             ApplciationDbContext db,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository, IBrandRepository brandRepository)
         {
             _db = db;
 
             Categories = categoryRepository;
+            Brands = brandRepository;
         }
 
         public async Task<int> SaveChangesAsync(

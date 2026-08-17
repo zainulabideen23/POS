@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplciationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
- builder.Services.AddProductApplication();
+builder.Services.AddProductApplication();
 builder.Services.AddProductInfrastructure(builder.Configuration);
 //builder.Services.AddIdentityApplication();
 builder.Services.AddIdentityInfrastructure(builder.Configuration);

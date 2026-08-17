@@ -83,7 +83,7 @@ namespace POS.Product.Application.Services
 
             var parent =
                 await _unitOfWork.Categories.GetParentAsync(
-                    id,
+                    category.Id,
                     cancellationToken);
 
             return parent == null

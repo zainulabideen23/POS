@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using POS.Product.Application.Interfaces;
+using POS.Product.Application.Interfaces.BrandInterfaces;
 using POS.Product.Application.Interfaces.CategoryInterfaces;
 using POS.Product.Infrastructure.Persistance;
 using POS.Product.Infrastructure.Repository;
@@ -23,15 +24,12 @@ public static class DependencyInjection
         });
 
         // Repositories
-        services.AddScoped<
-            ICategoryRepository,
-            CategoryRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         // Unit of Work
-        services.AddScoped<
-            IUnitOfWork,
-            UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddScoped<IBrandRepository, BrandRepository>();
         return services;
     }
 }
