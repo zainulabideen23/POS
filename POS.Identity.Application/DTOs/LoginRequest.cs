@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace POS.Identity.Application.DTOs
 {
     public class LoginRequest
     {
-        public string Email { get; set; } 
-        public string Password { get; set; } 
+        
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Tenant selection is required.")]
+        public int TenantId { get; set; }
     }
 }
