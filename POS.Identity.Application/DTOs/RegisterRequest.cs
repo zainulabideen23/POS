@@ -7,7 +7,8 @@ namespace POS.Identity.Application.DTOs
     public class RegisterRequest
     {
         public string Email { get; set; } 
-        public string Password { get; set; } 
-        public string Name { get; set; }
+        public string Password { get; set; }
+        public int TenantId { get; set; }
+        public string RoleName { get; set; }
     }
 }
