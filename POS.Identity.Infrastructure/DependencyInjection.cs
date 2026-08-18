@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using POS.Application.Services;
 using POS.Identity.Application.Interfaces;
 using POS.Identity.Domain.Entities;
 using POS.Identity.Infrastructure.Data;
 using POS.Identity.Infrastructure.Services;
+using POS.Infrastructure.Repositories;
 using System.Text;
 
 namespace POS.Identity.Infrastructure;
@@ -40,8 +42,12 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
 
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<ITokenService, TokenService>();
+
+
+        
 
         // 3. Register JWT Authentication right here in the module
         var jwtSettings = configuration.GetSection("JwtSettings");
