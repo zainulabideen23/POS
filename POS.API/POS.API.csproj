@@ -32,7 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\POS.Identity.Application\POS.Identity.Application.csproj" />
     <ProjectReference Include="..\POS.Identity.Infrastructure\POS.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\POS.Product.Application\POS.Product.Application.csproj" />
     <ProjectReference Include="..\POS.Product.Infrastructure\POS.Product.Infrastructure.csproj" />
   </ItemGroup>
 
