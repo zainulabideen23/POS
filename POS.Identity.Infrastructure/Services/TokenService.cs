@@ -16,7 +16,8 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    public string GenerateToken(ApplicationUser user, int tenantId, IList<string> permissions)
+    // 1. Add branchId to the method parameters
+    public string GenerateToken(ApplicationUser user, int tenantId, int branchId)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
@@ -27,14 +28,10 @@ public class TokenService : ITokenService
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("tenant_id", tenantId.ToString())
+            new Claim("tenant_id", tenantId.ToString()),
+            new Claim("branch_id", branchId.ToString())
         };
 
-        // Add granular permissions as claims
-        foreach (var permission in permissions)
-        {
-            claims.Add(new Claim("permission", permission));
-        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

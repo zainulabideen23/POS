@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using POS.Application.Services;
 using POS.Identity.Application.DTOs;
 
 namespace POS.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class BranchesController : ControllerBase
@@ -16,10 +18,10 @@ public class BranchesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var result =
-            await _branchService.GetAllAsync();
+            await _branchService.GetAllAsync(cancellationToken);
 
         return Ok(result);
     }
@@ -36,16 +38,7 @@ public class BranchesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("tenant/{tenantId:int}")]
-    public async Task<IActionResult> GetByTenant(
-        int tenantId)
-    {
-        var result =
-            await _branchService
-                .GetByTenantIdAsync(tenantId);
-
-        return Ok(result);
-    }
+    
 
     [HttpPost]
     public async Task<IActionResult> Create(

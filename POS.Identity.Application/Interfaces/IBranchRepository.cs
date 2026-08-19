@@ -6,6 +6,8 @@ namespace POS.Identity.Application.Interfaces
 {
     public interface IBranchRepository : IRepository<Branch>
     {
-        Task<IEnumerable<Branch>> GetByTenantIdAsync(int tenantId);
+        Task<IEnumerable<Branch>> GetAllByTenantIdAsync(int tenantId, CancellationToken cancellationToken);
+
+        Task<Branch?> GetByIdAndTenantIdAsync(int id, int tenantId);
     }
 }

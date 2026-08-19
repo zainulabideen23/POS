@@ -21,8 +21,8 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
         builder.Property(p => p.Description)
             .HasMaxLength(250);
 
-        // Ensure Permission names are unique
-        //builder.HasIndex(p => p.Name)
-        //    .IsUnique();
+        //Ensure Permission names are unique
+        builder.HasIndex(p => p.Name)
+            .IsUnique();
     }
 }

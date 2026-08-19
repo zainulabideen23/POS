@@ -47,7 +47,8 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, TokenService>();
 
 
-        
+       
+
 
         // 3. Register JWT Authentication right here in the module
         var jwtSettings = configuration.GetSection("JwtSettings");
