@@ -1,32 +1,38 @@
-﻿
-using POS.Identity.Application.DTOs;
+﻿using POS.Identity.Application.DTOs;
 using POS.Identity.Application.Interfaces;
+using POS.Shared.Application.Interfaces;
 
 namespace POS.Application.Services;
 
 public class BranchService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUser _currentUser;
 
-    public BranchService(IUnitOfWork unitOfWork)
+    public BranchService(
+        IUnitOfWork unitOfWork,
+        ICurrentUser currentUser)
     {
         _unitOfWork = unitOfWork;
+        _currentUser = currentUser;
     }
 
-    public async Task<IEnumerable<BranchResponseDto>>
-        GetAllAsync()
+    public async Task<IEnumerable<BranchResponseDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var branches =
-            await _unitOfWork.Branches.GetAllAsync();
+        var tenantId = _currentUser.TenantId;
+
+        var branches = await _unitOfWork.Branches
+            .GetAllByTenantIdAsync(tenantId,cancellationToken);
 
         return branches.Select(MapToResponse);
     }
 
-    public async Task<BranchResponseDto?>
-        GetByIdAsync(int id)
+    public async Task<BranchResponseDto?> GetByIdAsync(int id)
     {
-        var branch =
-            await _unitOfWork.Branches.GetByIdAsync(id);
+        var tenantId = _currentUser.TenantId;
+
+        var branch = await _unitOfWork.Branches
+            .GetByIdAndTenantIdAsync(id, tenantId);
 
         if (branch == null)
             return null;
@@ -34,30 +40,19 @@ public class BranchService
         return MapToResponse(branch);
     }
 
-    public async Task<IEnumerable<BranchResponseDto>>
-        GetByTenantIdAsync(int tenantId)
+    public async Task<BranchResponseDto?> CreateAsync(CreateBranchDto dto)
     {
-        var branches =
-            await _unitOfWork.Branches
-                .GetByTenantIdAsync(tenantId);
+        var tenantId = _currentUser.TenantId;
 
-        return branches.Select(MapToResponse);
-    }
-
-    public async Task<BranchResponseDto?>
-        CreateAsync(CreateBranchDto dto)
-    {
-        // Verify Tenant exists
-        var tenant =
-            await _unitOfWork.Tenants
-                .GetByIdAsync(dto.TenantId);
+        var tenant = await _unitOfWork.Tenants
+            .GetByIdAsync(tenantId);
 
         if (tenant == null)
             return null;
 
         var branch = new Branch
         {
-            TenantId = dto.TenantId,
+            TenantId = tenantId,
             Name = dto.Name,
             Code = dto.Code,
             Phone = dto.Phone,
@@ -66,17 +61,19 @@ public class BranchService
         };
 
         await _unitOfWork.Branches.AddAsync(branch);
-
         await _unitOfWork.SaveChangesAsync();
 
         return MapToResponse(branch);
     }
 
-    public async Task<bool>
-        UpdateAsync(int id, UpdateBranchDto dto)
+    public async Task<bool> UpdateAsync(
+        int id,
+        UpdateBranchDto dto)
     {
-        var branch =
-            await _unitOfWork.Branches.GetByIdAsync(id);
+        var tenantId = _currentUser.TenantId;
+
+        var branch = await _unitOfWork.Branches
+            .GetByIdAndTenantIdAsync(id, tenantId);
 
         if (branch == null)
             return false;
@@ -96,11 +93,12 @@ public class BranchService
         return true;
     }
 
-    public async Task<bool>
-        DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var branch =
-            await _unitOfWork.Branches.GetByIdAsync(id);
+        var tenantId = _currentUser.TenantId;
+
+        var branch = await _unitOfWork.Branches
+            .GetByIdAndTenantIdAsync(id, tenantId);
 
         if (branch == null)
             return false;
@@ -112,8 +110,7 @@ public class BranchService
         return true;
     }
 
-    private static BranchResponseDto MapToResponse(
-        Branch branch)
+    private static BranchResponseDto MapToResponse(Branch branch)
     {
         return new BranchResponseDto
         {

@@ -1,5 +1,6 @@
 ﻿using POS.Identity.Application.Interfaces;
 using POS.Identity.Infrastructure.Data;
+using POS.Identity.Infrastructure.Repositories;
 
 namespace POS.Infrastructure.Repositories;
 
@@ -11,6 +12,10 @@ public class UnitOfWork : IUnitOfWork
 
     public IBranchRepository Branches { get; }
 
+    public IPermissionRepository Permissions { get; }
+
+    public IRolePermissionRepository RolePermissions { get; }
+
     public UnitOfWork(
         PosIdentityDbContext context)
     {
@@ -18,6 +23,8 @@ public class UnitOfWork : IUnitOfWork
 
         Tenants = new TenantRepository(_db);
         Branches = new BranchRepository(_db);
+        Permissions = new PermissionRepository(_db);
+        RolePermissions = new RolePermissionRepository(_db);
     }
 
     public async Task<int> SaveChangesAsync()

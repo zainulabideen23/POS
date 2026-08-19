@@ -12,7 +12,7 @@ namespace POS.Identity.Application.DTOs
 
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Tenant selection is required.")]
-        public int TenantId { get; set; }
+        
+        
     }
 }

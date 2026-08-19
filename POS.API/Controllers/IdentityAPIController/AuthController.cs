@@ -17,17 +17,25 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register(
+    [FromBody] RegisterRequest request)
     {
-       
-        var isRegistered = await _authService.RegisterAsync(request);
+        var result = await _authService.RegisterAsync(request);
 
-        if (!isRegistered)
+        if (!result.Success)
         {
-            return BadRequest("Registration failed. Please check your details.");
+            return BadRequest(new
+            {
+                success = false,
+                message = result.Message
+            });
         }
 
-        return Ok(new { Message = "User registered successfully." });
+        return Ok(new
+        {
+            success = true,
+            message = result.Message
+        });
     }
 
     [HttpPost("login")]
@@ -38,50 +46,58 @@ public class AuthController : ControllerBase
             return BadRequest(new
             {
                 Message = "Validation failed.",
-                Errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                Errors = ModelState.Values
+                    .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
             });
         }
 
         try
         {
-            // 2. Attempt Login (This should return the JWT string)
+            // LoginAsync gets TenantId and BranchId
+            // from UserTenant and UserBranch
             var token = await _authService.LoginAsync(request);
 
             if (string.IsNullOrEmpty(token))
             {
-                return Unauthorized(new { Message = "Invalid email or password." });
+                return Unauthorized(new
+                {
+                    Message = "Invalid email or password."
+                });
             }
 
-            // 3. Configure Secure Cookie for JWT
+            // Store JWT in HttpOnly cookie
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true, // XSS Protection: JavaScript cannot read this cookie
-                Secure = true,   // HTTPS only (Set to false ONLY if developing on localhost HTTP)
-                SameSite = SameSiteMode.Strict, // CSRF Protection
-                Expires = DateTime.UtcNow.AddMinutes(120) // Must match your JWT Token Expiry
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(120)
             };
 
-            // 4. Append the token to the Response Cookies
-            Response.Cookies.Append("X-Access-Token", token, cookieOptions);
+            Response.Cookies.Append(
+                "X-Access-Token",
+                token,
+                cookieOptions);
 
-            // 5. Return success (Notice we DO NOT send the token in the JSON body anymore)
             return Ok(new
             {
                 Message = "Login successful",
-                IsAuthenticated = true,
-                TenantId = request.TenantId // Helpful for the frontend to know the active tenant
+                IsAuthenticated = true
             });
         }
         catch (UnauthorizedAccessException ex)
         {
-            // Catch specific domain exceptions (e.g., "Tenant access revoked")
-            return Unauthorized(new { Message = ex.Message });
+            return Unauthorized(new
+            {
+                Message = ex.Message
+            });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Catch unexpected server errors
-            // In production, log the 'ex.Message' to Serilog/AppInsights, but don't expose it to the user.
-            return StatusCode(500, new { Message = "An internal server error occurred during login." });
+            return StatusCode(500, new
+            {
+                Message = "An internal server error occurred during login."
+            });
         }
     }
 

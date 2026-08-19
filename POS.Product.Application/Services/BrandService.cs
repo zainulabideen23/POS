@@ -3,6 +3,7 @@ using POS.Product.Application.Dtos.Products;
 using POS.Product.Application.Interfaces;
 using POS.Product.Application.Interfaces.BrandInterfaces;
 using POS.Product.Domain.Entities;
+using POS.Shared.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,9 +13,11 @@ namespace POS.Product.Application.Services
     public class BrandService : IBrandService
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public BrandService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+           
         }
 
         public async Task<bool> ActivateAsync(Guid id, CancellationToken cancellationToken = default)
