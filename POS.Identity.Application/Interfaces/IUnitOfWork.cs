@@ -10,6 +10,10 @@ namespace POS.Identity.Application.Interfaces
 
         IBranchRepository Branches { get; }
 
+        IPermissionRepository Permissions { get; }
+
+        IRolePermissionRepository RolePermissions { get; }
+
         Task<int> SaveChangesAsync();
     }
 }

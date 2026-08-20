@@ -2,24 +2,34 @@
 using POS.Identity.Application.Interfaces;
 using POS.Identity.Infrastructure.Data;
 
-
 namespace POS.Infrastructure.Repositories;
 
 public class BranchRepository
     : Repository<Branch>, IBranchRepository
 {
     private readonly PosIdentityDbContext _context;
+
     public BranchRepository(PosIdentityDbContext context)
         : base(context)
     {
         _context = context;
     }
 
-    public async Task<IEnumerable<Branch>> GetByTenantIdAsync(
+    public async Task<IEnumerable<Branch>> GetAllByTenantIdAsync(
+        int tenantId, CancellationToken cancellationToken)
+    {
+        return await _context.Branches
+            .Where(x => x.TenantId == tenantId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<Branch?> GetByIdAndTenantIdAsync(
+        int id,
         int tenantId)
     {
         return await _context.Branches
-            .Where(b => b.TenantId == tenantId)
-            .ToListAsync();
+            .FirstOrDefaultAsync(x =>
+                x.Id == id &&
+                x.TenantId == tenantId);
     }
 }

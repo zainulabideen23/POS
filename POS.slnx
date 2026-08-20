@@ -21,6 +21,9 @@
     <Project Path="POS.Product.Domain/POS.Product.Domain.csproj" />
     <Project Path="POS.Product.Infrastructure/POS.Product.Infrastructure.csproj" />
   </Folder>
-  <Folder Name="/src/Shared/" />
+  <Folder Name="/src/Shared/">
+    <Project Path="POS.Shared.Application/POS.Shared.Application.csproj" Id="bc3bee89-4265-4573-b62e-af755bdbf902" />
+    <Project Path="POS.Shared.Infrastructure/POS.Shared.Infrastructure.csproj" Id="ba587581-34c8-410e-894e-08d5051e4df7" />
+  </Folder>
   <Folder Name="/tests/" />
 </Solution>
