@@ -1,4 +1,3 @@
-
 using POS.Identity.Infrastructure;
 using POS.Identity.Application;
 using POS.Product.Application;
