@@ -23,7 +23,7 @@ public class TenantService
     }
 
     public async Task<TenantResponseDto?>
-        GetByIdAsync(int id)
+        GetByIdAsync(Guid id)
     {
         var tenant =
             await _unitOfWork.Tenants
@@ -59,7 +59,7 @@ public class TenantService
     }
 
     public async Task<bool>
-        UpdateAsync(int id, UpdateTenantDto dto)
+        UpdateAsync(Guid id, UpdateTenantDto dto)
     {
         var tenant =
             await _unitOfWork.Tenants.GetByIdAsync(id);
@@ -86,7 +86,7 @@ public class TenantService
         return true;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
         var tenant =
             await _unitOfWork.Tenants.GetByIdAsync(id);

@@ -23,10 +23,6 @@ public static class DependencyInjection
                     "DefaultConnection"));
         });
 
-        // Repositories
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<IBrandRepository, BrandRepository>();
-
         // Unit of Work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -8,13 +8,12 @@ public class CurrentUserService : ICurrentUser
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUserService(
-        IHttpContextAccessor httpContextAccessor)
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public int UserId
+    public Guid UserId
     {
         get
         {
@@ -22,11 +21,13 @@ public class CurrentUserService : ICurrentUser
                 .User
                 .FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return int.TryParse(value, out var id) ? id : 0;
+            return Guid.TryParse(value, out var id)
+                ? id
+                : Guid.Empty;
         }
     }
 
-    public int TenantId
+    public Guid TenantId
     {
         get
         {
@@ -35,7 +36,9 @@ public class CurrentUserService : ICurrentUser
                 .FindFirst("tenant_id")
                 ?.Value;
 
-            return int.TryParse(value, out var id) ? id : 0;
+            return Guid.TryParse(value, out var id)
+                ? id
+                : Guid.Empty;
         }
     }
 
@@ -51,4 +54,8 @@ public class CurrentUserService : ICurrentUser
             return int.TryParse(value, out var id) ? id : 0;
         }
     }
+
+    Guid ICurrentUser.TenantId => throw new NotImplementedException();
+
+    Guid ICurrentUser.BranchId => throw new NotImplementedException();
 }

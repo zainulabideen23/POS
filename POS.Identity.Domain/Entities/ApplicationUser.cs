@@ -10,7 +10,7 @@ namespace POS.Identity.Domain.Entities
         //between user and role exist and mange by identity framework
 
         // Navigation Properties
-        public ICollection<UserTenant> UserTenants { get; set; } = new List<UserTenant>();
+    public ICollection<UserTenant> UserTenants { get; set; } = new List<UserTenant>();
     public ICollection<UserBranch> UserBranches { get; set; } = new List<UserBranch>();
     }
 }

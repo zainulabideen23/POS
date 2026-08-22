@@ -9,7 +9,7 @@ namespace POS.Identity.Application.Interfaces
     {
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(Guid id);
 
         Task AddAsync(T entity);
 

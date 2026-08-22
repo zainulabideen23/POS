@@ -4,5 +4,5 @@ using System.Security.Claims;
 
 public interface ITokenService
 {
-    string GenerateToken(ApplicationUser user, int tenantId, int branchId);
+    string GenerateToken(ApplicationUser user, Guid tenantId, Guid branchId);
 }

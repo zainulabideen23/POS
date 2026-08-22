@@ -2,7 +2,7 @@
 
 public interface ICurrentUser
 {
-    int UserId { get; }
-    int TenantId { get; }
-    int BranchId { get; }
+    Guid UserId { get; }
+    Guid TenantId { get; }
+    Guid BranchId { get; }
 }

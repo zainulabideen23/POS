@@ -12,23 +12,9 @@ namespace POS.Product.Infrastructure.Repository
 {
     public class UnitRepository : Repository<Unit>, IUnitRepository
     {
-        private readonly ApplciationDbContext _db;
-        private readonly DbSet _dbSet;
 
-        public UnitRepository(ApplciationDbContext db, DbSet dbSet)
+        public UnitRepository(ApplciationDbContext db) : base(db) 
         {
-            _db = db;
-            _dbSet = dbSet;
-        }
-
-        public async Task<IEnumerable<Unit>> GetByCategoryAsync(UnitCategory category, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .AsNoTracking()
-                .Where(x => x.Category == category)
-                .OrderBy(x => x.ConversionFactor)
-                .ThenBy(x => x.Name)
-                .ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Unit>> SearchAsync(
@@ -65,19 +51,15 @@ namespace POS.Product.Infrastructure.Repository
                 cancellationToken);
         }
 
-        public Task<IEnumerable<Unit>> GetByCategoryAsync(UnitCategory category)
+        public async Task<IEnumerable<Unit>> GetByCategoryAsync(UnitCategory category, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _dbSet
+                           .AsNoTracking()
+                           .Where(x => x.Category == category)
+                           .OrderBy(x => x.ConversionFactor)
+                           .ThenBy(x => x.Name)
+                           .ToListAsync(cancellationToken);
         }
 
-        public Task<IEnumerable<Unit>> SearchAsync(string searchTerm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ExistsAsync(UnitCategory category, string name, Guid? excludeId = null)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

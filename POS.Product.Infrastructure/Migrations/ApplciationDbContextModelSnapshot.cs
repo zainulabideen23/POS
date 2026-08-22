@@ -137,6 +137,9 @@ namespace POS.Product.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("SKU")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -146,12 +149,17 @@ namespace POS.Product.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SKU")
                         .IsUnique();
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("ProductVariants", (string)null);
                 });
@@ -162,9 +170,18 @@ namespace POS.Product.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("ConversionFactor")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSystemDefined")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -176,13 +193,14 @@ namespace POS.Product.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TenantId", "Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[TenantId] IS NOT NULL");
 
                     b.ToTable("Units", (string)null);
                 });
@@ -289,6 +307,12 @@ namespace POS.Product.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("POS.Product.Domain.Entities.Unit", null)
+                        .WithMany("ProductsVaiants")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
                 });
 
@@ -307,7 +331,7 @@ namespace POS.Product.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("POS.Product.Domain.Entities.Unit", "Unit")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -338,7 +362,7 @@ namespace POS.Product.Infrastructure.Migrations
 
             modelBuilder.Entity("POS.Product.Domain.Entities.Unit", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductsVaiants");
                 });
 
             modelBuilder.Entity("POS.Product.Domain.Entities.product", b =>

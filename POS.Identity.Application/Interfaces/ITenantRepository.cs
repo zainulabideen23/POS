@@ -6,6 +6,6 @@ namespace POS.Identity.Application.Interfaces
 {
     public interface ITenantRepository : IRepository<Tenant>
     {
-        Task<Tenant?> GetTenantWithBranchesAsync(int id);
+        Task<Tenant?> GetTenantWithBranchesAsync(Guid id);
     }
 }

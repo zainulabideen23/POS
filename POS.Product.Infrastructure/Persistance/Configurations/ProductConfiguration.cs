@@ -45,7 +45,7 @@ namespace POS.Product.Infrastructure.Persistance.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Unit)
-                .WithMany(x => x.Products)
+                .WithMany()
                 .HasForeignKey(x => x.UnitId)
                 .OnDelete(DeleteBehavior.Restrict);
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace POS.Identity.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class identity : Migration
+    public partial class InitialIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,6 +16,7 @@ namespace POS.Identity.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -68,8 +69,7 @@ namespace POS.Identity.Infrastructure.Migrations
                 name: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LegalName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TaxNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -222,9 +222,8 @@ namespace POS.Identity.Infrastructure.Migrations
                 name: "Branches",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -250,7 +249,7 @@ namespace POS.Identity.Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenantId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     JoinedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
@@ -276,7 +275,7 @@ namespace POS.Identity.Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false)
+                    BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -338,6 +337,12 @@ namespace POS.Identity.Infrastructure.Migrations
                 name: "IX_Branches_TenantId",
                 table: "Branches",
                 column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_Name",
+                table: "Permissions",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",

@@ -27,7 +27,7 @@ public class BranchService
         return branches.Select(MapToResponse);
     }
 
-    public async Task<BranchResponseDto?> GetByIdAsync(int id)
+    public async Task<BranchResponseDto?> GetByIdAsync(Guid id)
     {
         var tenantId = _currentUser.TenantId;
 
@@ -67,7 +67,7 @@ public class BranchService
     }
 
     public async Task<bool> UpdateAsync(
-        int id,
+        Guid id,
         UpdateBranchDto dto)
     {
         var tenantId = _currentUser.TenantId;
@@ -93,7 +93,7 @@ public class BranchService
         return true;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
         var tenantId = _currentUser.TenantId;
 

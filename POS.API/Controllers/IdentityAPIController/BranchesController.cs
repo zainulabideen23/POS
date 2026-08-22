@@ -27,7 +27,7 @@ public class BranchesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result =
             await _branchService.GetByIdAsync(id);
@@ -58,7 +58,7 @@ public class BranchesController : ControllerBase
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        int id,
+        Guid id,
         UpdateBranchDto dto)
     {
         var updated =
@@ -71,7 +71,7 @@ public class BranchesController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var deleted =
             await _branchService.DeleteAsync(id);

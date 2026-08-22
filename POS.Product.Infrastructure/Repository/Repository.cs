@@ -10,11 +10,13 @@ namespace POS.Product.Infrastructure.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplciationDbContext _db;
+        protected readonly ApplciationDbContext _db;
+        protected readonly DbSet<T> _dbSet;
 
-        public Repository(ApplciationDbContext db)
+        public Repository(ApplciationDbContext db) 
         {
             _db = db;
+            _dbSet = _db.Set<T>();
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync(

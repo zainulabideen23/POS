@@ -25,7 +25,7 @@ public class TenantsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result =
             await _tenantService.GetByIdAsync(id);
@@ -51,7 +51,7 @@ public class TenantsController : ControllerBase
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        int id,
+        Guid id,
         UpdateTenantDto dto)
     {
         var updated =
@@ -64,7 +64,7 @@ public class TenantsController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var deleted =
             await _tenantService.DeleteAsync(id);

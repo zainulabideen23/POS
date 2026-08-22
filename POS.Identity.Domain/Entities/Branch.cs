@@ -3,10 +3,10 @@
 public class Branch
 {
     // Primary Key
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     // Foreign Key mapping to Tenants table
-    public int TenantId { get; set; }
+    public Guid TenantId { get; set; }
 
     public string Name { get; set; } = string.Empty;
     public string? Code { get; set; }

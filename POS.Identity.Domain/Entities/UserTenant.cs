@@ -10,7 +10,7 @@ namespace POS.Identity.Domain.Entities
         public string UserId { get; set; } = string.Empty;
         public ApplicationUser User { get; set; } = null!;
 
-        public int TenantId { get; set; }
+        public Guid TenantId { get; set; }
         public Tenant Tenant { get; set; }
 
         public bool IsActive { get; set; }

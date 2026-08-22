@@ -16,7 +16,7 @@ public class BranchRepository
     }
 
     public async Task<IEnumerable<Branch>> GetAllByTenantIdAsync(
-        int tenantId, CancellationToken cancellationToken)
+        Guid tenantId, CancellationToken cancellationToken)
     {
         return await _context.Branches
             .Where(x => x.TenantId == tenantId)
@@ -24,8 +24,8 @@ public class BranchRepository
     }
 
     public async Task<Branch?> GetByIdAndTenantIdAsync(
-        int id,
-        int tenantId)
+        Guid id,
+        Guid tenantId)
     {
         return await _context.Branches
             .FirstOrDefaultAsync(x =>

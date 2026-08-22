@@ -1,39 +1,41 @@
-﻿using POS.Product.Application.Interfaces.UnitInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using POS.Product.Application.Dtos.Unit;
+using POS.Product.Application.Interfaces;
+using POS.Product.Application.Interfaces.UnitInterfaces;
+using POS.Product.Application.Units;
+using POS.Product.Domain.Entities;
+using POS.Product.Domain.Enum;
+using POS.Shared.Application.Interfaces;
 
 namespace POS.Product.Application.Services
 {
     public class UnitService : IUnitService
     {
-        private readonly IUnitRepository _unitRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ITenantContext _tenantContext;
+        private readonly ICurrentUser _currentUser;
 
         public UnitService(
-            IUnitRepository unitRepository,
             IUnitOfWork unitOfWork,
-            ITenantContext tenantContext)
+            ICurrentUser currentUser)
         {
-            _unitRepository = unitRepository;
             _unitOfWork = unitOfWork;
-            _tenantContext = tenantContext;
+            _currentUser = currentUser;
         }
 
-        public async Task<IEnumerable<UnitResponseDto>> GetAllAsync()
+        public async Task<IEnumerable<UnitResponseDto>> GetAllAsync(
+            CancellationToken cancellationToken = default)
         {
-            var units = await _unitRepository.GetAllAsync();
+            var units = await _unitOfWork.Units.GetAllAsync();
 
             return units
                 .Where(IsAccessibleToCurrentTenant)
                 .Where(x => x.IsActive)
-                .Select(Map);
+                .Select(Map)
+                .ToList();
         }
 
-        public async Task<UnitResponseDto?> GetByIdAsync(Guid id)
+        public async Task<UnitResponseDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var unit = await _unitOfWork.Units.GetByIdAsync(id);
 
             if (unit == null)
                 return null;
@@ -44,57 +46,60 @@ namespace POS.Product.Application.Services
             return Map(unit);
         }
 
-        public async Task<IEnumerable<UnitResponseDto>>
-            GetByCategoryAsync(UnitCategory category)
+        public async Task<IEnumerable<UnitResponseDto>> GetByCategoryAsync(UnitCategory category,
+            CancellationToken cancellationToken = default)
         {
             if (!Enum.IsDefined(category))
-                throw new ArgumentException(
-                    "Invalid unit category.");
+                throw new ArgumentException("Invalid unit category.");
 
-            var units =
-                await _unitRepository.GetByCategoryAsync(category);
+            var units = await _unitOfWork.Units.GetByCategoryAsync(category);
 
             return units
                 .Where(IsAccessibleToCurrentTenant)
                 .Where(x => x.IsActive)
-                .Select(Map);
+                .Select(Map)
+                .ToList();
         }
 
-        public async Task<IEnumerable<UnitResponseDto>>
-            SearchAsync(string searchTerm)
+        public async Task<IEnumerable<UnitResponseDto>> SearchAsync(
+            string searchTerm,
+            CancellationToken cancellationToken = default)
         {
-            var units =
-                await _unitRepository.SearchAsync(searchTerm);
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return Enumerable.Empty<UnitResponseDto>();
+
+            var units = await _unitOfWork.Units.SearchAsync(searchTerm);
 
             return units
                 .Where(IsAccessibleToCurrentTenant)
                 .Where(x => x.IsActive)
-                .Select(Map);
+                .Select(Map)
+                .ToList();
         }
 
         public async Task<UnitResponseDto> CreateAsync(
-            CreateUnitDto dto)
+            CreateUnitDto dto,
+            CancellationToken cancellationToken = default)
         {
             ValidateCreateDto(dto);
 
-            var exists = await _unitRepository.ExistsAsync(
+            var exists = await _unitOfWork.Units.ExistsAsync(
                 dto.Category,
                 dto.Name);
 
             if (exists)
-            {
                 throw new InvalidOperationException(
                     "A unit with this name already exists.");
-            }
 
             var unit = Unit.CreateCustom(
-                _tenantContext.TenantId,
+                _currentUser.UserId,
+                _currentUser.TenantId,
                 dto.Category,
                 dto.Name,
                 dto.ShortName,
                 dto.ConversionFactor);
 
-            await _unitRepository.AddAsync(unit);
+            await _unitOfWork.Units.AddAsync(unit);
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -103,21 +108,20 @@ namespace POS.Product.Application.Services
 
         public async Task<UnitResponseDto?> UpdateAsync(
             Guid id,
-            UpdateUnitDto dto)
+            UpdateUnitDto dto,
+            CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ArgumentException(
-                    "Unit name is required.");
+                throw new ArgumentException("Unit name is required.");
 
             if (string.IsNullOrWhiteSpace(dto.ShortName))
-                throw new ArgumentException(
-                    "Short name is required.");
+                throw new ArgumentException("Unit short name is required.");
 
             if (dto.ConversionFactor <= 0)
                 throw new ArgumentException(
                     "Conversion factor must be greater than zero.");
 
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var unit = await _unitOfWork.Units.GetByIdAsync(id);
 
             if (unit == null)
                 return null;
@@ -131,7 +135,7 @@ namespace POS.Product.Application.Services
                     "System-defined units cannot be modified.");
             }
 
-            var duplicate = await _unitRepository.ExistsAsync(
+            var duplicate = await _unitOfWork.Units.ExistsAsync(
                 unit.Category,
                 dto.Name,
                 id);
@@ -147,16 +151,18 @@ namespace POS.Product.Application.Services
                 dto.ShortName,
                 dto.ConversionFactor);
 
-            _unitRepository.Update(unit);
+            _unitOfWork.Units.Update(unit);
 
             await _unitOfWork.SaveChangesAsync();
 
             return Map(unit);
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var unit = await _unitOfWork.Units.GetByIdAsync(id);
 
             if (unit == null)
                 return false;
@@ -170,19 +176,21 @@ namespace POS.Product.Application.Services
                     "System-defined units cannot be deleted.");
             }
 
-            // Soft delete.
+            // Soft delete
             unit.Deactivate();
 
-            _unitRepository.Update(unit);
+            _unitOfWork.Units.Update(unit);
 
             await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> ActivateAsync(Guid id)
+        public async Task<bool> ActivateAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var unit = await _unitOfWork.Units.GetByIdAsync(id);
 
             if (unit == null)
                 return false;
@@ -192,16 +200,18 @@ namespace POS.Product.Application.Services
 
             unit.Activate();
 
-            _unitRepository.Update(unit);
+            _unitOfWork.Units.Update(unit);
 
             await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> DeactivateAsync(Guid id)
+        public async Task<bool> DeactivateAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var unit = await _unitOfWork.Units.GetByIdAsync(id);
 
             if (unit == null)
                 return false;
@@ -217,7 +227,7 @@ namespace POS.Product.Application.Services
 
             unit.Deactivate();
 
-            _unitRepository.Update(unit);
+            _unitOfWork.Units.Update(unit);
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -225,33 +235,26 @@ namespace POS.Product.Application.Services
         }
 
         public async Task<ConvertUnitResponseDto> ConvertAsync(
-            ConvertUnitDto dto)
+            ConvertUnitDto dto,
+            CancellationToken cancellationToken = default)
         {
             if (dto.Quantity < 0)
-            {
                 throw new ArgumentException(
                     "Quantity cannot be negative.");
-            }
 
-            var fromUnit =
-                await _unitRepository.GetByIdAsync(
-                    dto.FromUnitId);
+            var fromUnit = await _unitOfWork.Units.GetByIdAsync(
+                dto.FromUnitId);
 
-            var toUnit =
-                await _unitRepository.GetByIdAsync(
-                    dto.ToUnitId);
+            var toUnit = await _unitOfWork.Units.GetByIdAsync(
+                dto.ToUnitId);
 
             if (fromUnit == null)
-            {
                 throw new KeyNotFoundException(
                     "Source unit not found.");
-            }
 
             if (toUnit == null)
-            {
                 throw new KeyNotFoundException(
                     "Target unit not found.");
-            }
 
             if (!IsAccessibleToCurrentTenant(fromUnit) ||
                 !IsAccessibleToCurrentTenant(toUnit))
@@ -260,8 +263,7 @@ namespace POS.Product.Application.Services
                     "Unit not found.");
             }
 
-            if (!fromUnit.IsActive ||
-                !toUnit.IsActive)
+            if (!fromUnit.IsActive || !toUnit.IsActive)
             {
                 throw new InvalidOperationException(
                     "Both units must be active.");
@@ -289,36 +291,26 @@ namespace POS.Product.Application.Services
 
         private bool IsAccessibleToCurrentTenant(Unit unit)
         {
-            return unit.IsSystemDefined ||
-                   unit.TenantId == _tenantContext.TenantId;
+            return unit.IsSystemDefined || unit.TenantId == _currentUser.TenantId;
         }
 
-        private static void ValidateCreateDto(
-            CreateUnitDto dto)
+        private static void ValidateCreateDto(CreateUnitDto dto)
         {
             if (!Enum.IsDefined(dto.Category))
-            {
                 throw new ArgumentException(
                     "Invalid unit category.");
-            }
 
             if (string.IsNullOrWhiteSpace(dto.Name))
-            {
                 throw new ArgumentException(
                     "Unit name is required.");
-            }
 
             if (string.IsNullOrWhiteSpace(dto.ShortName))
-            {
                 throw new ArgumentException(
-                    "Short name is required.");
-            }
+                    "Unit short name is required.");
 
             if (dto.ConversionFactor <= 0)
-            {
                 throw new ArgumentException(
                     "Conversion factor must be greater than zero.");
-            }
         }
 
         private static UnitResponseDto Map(Unit unit)
@@ -328,8 +320,7 @@ namespace POS.Product.Application.Services
                 Id = unit.Id,
                 Category = unit.Category,
                 CategoryName = unit.Category.ToString(),
-                BaseUnitName =
-                    UnitRules.GetBaseUnitName(unit.Category),
+                BaseUnitName = UnitRules.GetBaseUnitName(unit.Category),
                 Name = unit.Name,
                 ShortName = unit.ShortName,
                 ConversionFactor = unit.ConversionFactor,
@@ -337,6 +328,5 @@ namespace POS.Product.Application.Services
                 IsActive = unit.IsActive
             };
         }
-
     }
 }

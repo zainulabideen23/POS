@@ -8,15 +8,15 @@ namespace POS.Product.Application.Interfaces.UnitInterfaces
 {
     public interface IUnitService
     {
-        Task<IEnumerable<UnitResponseDto>> GetAllAsync();
-        Task<UnitResponseDto?> GetByIdAsync(Guid id);
-        Task<IEnumerable<UnitResponseDto>> GetByCategoryAsync(UnitCategory category);
-        Task<IEnumerable<UnitResponseDto>> SearchAsync(string searchTerm);
-        Task<UnitResponseDto> CreateAsync(CreateUnitDto dto);
-        Task<UnitResponseDto?> UpdateAsync(Guid id, UpdateUnitDto dto);
-        Task<bool> DeleteAsync(Guid id);
-        Task<bool> ActivateAsync(Guid id);
-        Task<bool> DeactivateAsync(Guid id);
-        Task<ConvertUnitResponseDto> ConvertAsync(ConvertUnitDto dto);
+        Task<IEnumerable<UnitResponseDto>> GetAllAsync(CancellationToken cancellationToken=default);
+        Task<UnitResponseDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<UnitResponseDto>> GetByCategoryAsync(UnitCategory category, CancellationToken cancellationToken = default);
+        Task<IEnumerable<UnitResponseDto>> SearchAsync(string searchTerm, CancellationToken cancellationToken = default);
+        Task<UnitResponseDto> CreateAsync(CreateUnitDto dto, CancellationToken cancellationToken = default);
+        Task<UnitResponseDto?> UpdateAsync(Guid id, UpdateUnitDto dto, CancellationToken cancellationToken = default);
+        Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> ActivateAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> DeactivateAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<ConvertUnitResponseDto> ConvertAsync(ConvertUnitDto dto, CancellationToken cancellationToken = default);
     }
 }

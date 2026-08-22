@@ -15,7 +15,7 @@ public class TenantRepository
         _context = context;
     }
       
-    public async Task<Tenant?> GetTenantWithBranchesAsync(int id)
+    public async Task<Tenant?> GetTenantWithBranchesAsync(Guid id)
     {
         return await _context.Tenants
             .Include(t => t.Branches)

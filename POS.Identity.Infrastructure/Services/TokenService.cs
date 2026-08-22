@@ -17,7 +17,7 @@ public class TokenService : ITokenService
     }
 
     // 1. Add branchId to the method parameters
-    public string GenerateToken(ApplicationUser user, int tenantId, int branchId)
+    public string GenerateToken(ApplicationUser user, Guid tenantId, Guid branchId)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));

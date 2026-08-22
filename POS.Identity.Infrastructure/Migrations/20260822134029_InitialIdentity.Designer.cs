@@ -12,8 +12,8 @@ using POS.Identity.Infrastructure.Data;
 namespace POS.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(PosIdentityDbContext))]
-    [Migration("20260816013035_identity")]
-    partial class identity
+    [Migration("20260822134029_InitialIdentity")]
+    partial class InitialIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,9 @@ namespace POS.Identity.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -54,11 +57,9 @@ namespace POS.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("Branch", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -82,8 +83,8 @@ namespace POS.Identity.Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -286,6 +287,9 @@ namespace POS.Identity.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Permissions");
                 });
 
@@ -309,8 +313,8 @@ namespace POS.Identity.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "BranchId");
 
@@ -324,8 +328,8 @@ namespace POS.Identity.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -346,11 +350,9 @@ namespace POS.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("Tenant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");

@@ -33,7 +33,7 @@ namespace POS.Identity.Application.Services
                 );
             }
 
-            var tenantId = _currentUser.TenantId;
+            Guid tenantId = _currentUser.TenantId;
 
             var roleName = request.RoleName.Trim();
             var normalizedName = roleName.ToUpperInvariant();
