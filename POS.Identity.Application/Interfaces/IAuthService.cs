@@ -9,5 +9,8 @@ namespace POS.Identity.Application.Interfaces
     {
         Task<(bool Success, string Message)> RegisterAsync(RegisterRequest request);
         Task<string> LoginAsync(LoginRequest request);
+
+
+
     }
 }

@@ -13,7 +13,7 @@ namespace POS.API.Controllers
 
         public WarehousesController(IWarehouseService warehouseService)
         {
-            _warehouseService = warehouseService ?? throw new ArgumentNullException(nameof(warehouseService));
+            _warehouseService = warehouseService ;
         }
 
         [HttpGet]

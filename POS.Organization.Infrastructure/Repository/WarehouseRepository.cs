@@ -8,7 +8,7 @@ using System.Text;
 
 namespace POS.Organization.Infrastructure.Repository
 {
-    public class WarehouseRepository : GenericRepository<Warehouse>, IWarehouseRepository
+    public class WarehouseRepository : Repository<Warehouse>, IWarehouseRepository
     {
         public WarehouseRepository(POSOrganzationDbContext context) : base(context)
         {
