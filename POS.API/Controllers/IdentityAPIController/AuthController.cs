@@ -1,7 +1,9 @@
 ﻿// POS.API/Controllers/AuthController.cs
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using POS.Identity.Application.Interfaces;
 using POS.Identity.Application.DTOs;
+using POS.Identity.Application.Interfaces;
+using POS.Shared.Application.Interfaces;
 
 namespace POS.API.Controllers.IdentityAPIController;
 
@@ -10,10 +12,12 @@ namespace POS.API.Controllers.IdentityAPIController;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly ICurrentUser _currentUser;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, ICurrentUser currentUser)
     {
         _authService = authService;
+        _currentUser = currentUser;
     }
 
     [HttpPost("register")]
@@ -108,4 +112,5 @@ public class AuthController : ControllerBase
         Response.Cookies.Delete("X-Access-Token");
         return Ok(new { Message = "Logged out successfully" });
     }
+
 }

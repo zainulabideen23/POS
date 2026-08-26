@@ -13,6 +13,7 @@ namespace POS.Organization.Application
         public static IServiceCollection ADDOrganizationApplication(this IServiceCollection services)
         {
             services.AddScoped<IWarehouseService, WarehouseService>();
+            services.AddScoped<IPOSRegisterService, POSRegisterService>();
             return services;
         }
     }

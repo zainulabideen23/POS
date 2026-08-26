@@ -2,12 +2,12 @@
 using POS.Organization.Application.Interfaces;
 using POS.Organization.Infrastructure.Persistence;
 
-public class GenericRepository<T> : IRepository<T> where T : class
+public class Repository<T> : IRepository<T> where T : class
 {
     protected readonly POSOrganzationDbContext _context;
     protected readonly DbSet<T> _dbSet;
 
-    public GenericRepository(POSOrganzationDbContext context)
+    public Repository(POSOrganzationDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<T>();
