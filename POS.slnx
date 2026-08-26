@@ -14,6 +14,8 @@
     <Project Path="POS.Identity.Infrastructure/POS.Identity.Infrastructure.csproj" Id="1511aaaa-c159-4ec6-8856-06a1d0f238ff" />
   </Folder>
   <Folder Name="/src/Modules/Organization/">
+    <Project Path="POS.Organization.Application/POS.Organization.Application.csproj" Id="4677d9ad-39b4-4782-8142-24cfaa1c7635" />
+    <Project Path="POS.Organization.Infrastructure/POS.Organization.Infrastructure.csproj" Id="788134b7-b15c-412c-afe7-278c7798e398" />
     <Project Path="POS.Tenant.Domain/POS.Organization.Domain.csproj" />
   </Folder>
   <Folder Name="/src/Modules/Product/">
