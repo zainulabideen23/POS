@@ -14,7 +14,16 @@ public class TenantRepository
     {
         _context = context;
     }
-      
+
+    public async Task<Tenant?> GetByNameAsync(
+    string name,
+    CancellationToken cancellationToken)
+    {
+        return await _context.Tenants
+            .FirstOrDefaultAsync(
+                t => t.Name == name,
+                cancellationToken);
+    }
     public async Task<Tenant?> GetTenantWithBranchesAsync(Guid id)
     {
         return await _context.Tenants

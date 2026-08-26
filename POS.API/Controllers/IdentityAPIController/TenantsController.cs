@@ -24,7 +24,7 @@ public class TenantsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result =
@@ -35,6 +35,8 @@ public class TenantsController : ControllerBase
 
         return Ok(result);
     }
+
+
 
     [HttpPost]
     public async Task<IActionResult> Create(
@@ -49,7 +51,7 @@ public class TenantsController : ControllerBase
             result);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(
         Guid id,
         UpdateTenantDto dto)
@@ -63,7 +65,7 @@ public class TenantsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var deleted =

@@ -33,8 +33,7 @@ public class CurrentUserService : ICurrentUser
         {
             var value = _httpContextAccessor.HttpContext?
                 .User
-                .FindFirst("tenant_id")
-                ?.Value;
+                .FindFirstValue("tenant_id");
 
             return Guid.TryParse(value, out var id)
                 ? id
@@ -42,20 +41,17 @@ public class CurrentUserService : ICurrentUser
         }
     }
 
-    public int BranchId
+    public Guid BranchId
     {
         get
         {
             var value = _httpContextAccessor.HttpContext?
                 .User
-                .FindFirst("branch_id")
-                ?.Value;
+                .FindFirstValue("branch_id");
 
-            return int.TryParse(value, out var id) ? id : 0;
+            return Guid.TryParse(value, out var id)
+                ? id
+                : Guid.Empty;
         }
     }
-
-    Guid ICurrentUser.TenantId => throw new NotImplementedException();
-
-    Guid ICurrentUser.BranchId => throw new NotImplementedException();
 }

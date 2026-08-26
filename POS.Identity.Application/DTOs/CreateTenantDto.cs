@@ -7,6 +7,9 @@ namespace POS.Identity.Application.DTOs
     public class CreateTenantDto
     {
         public string Name { get; set; } = string.Empty;
+        public string BranchName { get; set; }
+
+        public string BranchCode { get; set; } = string.Empty;
         public string? LegalName { get; set; }
         public string? TaxNumber { get; set; }
         public string? Email { get; set; }

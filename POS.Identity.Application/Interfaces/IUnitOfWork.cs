@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,6 +14,8 @@ namespace POS.Identity.Application.Interfaces
         IPermissionRepository Permissions { get; }
 
         IRolePermissionRepository RolePermissions { get; }
+
+        Task<IDbContextTransaction> BeginTransactionAsync();
 
         Task<int> SaveChangesAsync();
     }
