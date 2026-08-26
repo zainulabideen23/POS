@@ -22,4 +22,12 @@
     <ProjectReference Include="..\POS.Shared.Application\POS.Shared.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\DotNet Learnings\WEB_API Projects\POS\POS.Product.Application\Interfaces\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\DotNet Learnings\WEB_API Projects\POS\POS.Product.Application\Interfaces\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -42,7 +42,7 @@ public class CurrentUserService : ICurrentUser
         }
     }
 
-    public int BranchId
+    public Guid BranchId
     {
         get
         {
@@ -51,11 +51,9 @@ public class CurrentUserService : ICurrentUser
                 .FindFirst("branch_id")
                 ?.Value;
 
-            return int.TryParse(value, out var id) ? id : 0;
+            return Guid.TryParse(value, out var id)
+                            ? id
+                            : Guid.Empty;
         }
     }
-
-    Guid ICurrentUser.TenantId => throw new NotImplementedException();
-
-    Guid ICurrentUser.BranchId => throw new NotImplementedException();
 }

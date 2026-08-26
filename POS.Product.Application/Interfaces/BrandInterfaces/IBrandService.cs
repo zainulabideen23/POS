@@ -15,7 +15,7 @@ namespace POS.Product.Application.Interfaces.BrandInterfaces
             Guid id,
             CancellationToken cancellationToken = default);
 
-        Task<IReadOnlyList<ProductResponse>> GetProductsAsync(
+        Task<IReadOnlyList<ProductResponseDto>> GetProductsAsync(
             Guid brandId,
             CancellationToken cancellationToken = default);
 
