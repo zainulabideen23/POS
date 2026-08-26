@@ -125,7 +125,7 @@ namespace POS.Product.Application.Services
                 : MapToResponse(brand);
         }
 
-        public async Task<IReadOnlyList<ProductResponse>> GetProductsAsync(Guid brandId, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<ProductResponseDto>> GetProductsAsync(Guid brandId, CancellationToken cancellationToken = default)
         {
             var brandExists = await _unitOfWork.Brands
                      .ExistsAsync(brandId, cancellationToken);
@@ -140,7 +140,7 @@ namespace POS.Product.Application.Services
                     cancellationToken);
 
             return products
-                .Select(x => new ProductResponse
+                .Select(x => new ProductResponseDto
                 {
                     Id = x.Id,
                     Name = x.Name

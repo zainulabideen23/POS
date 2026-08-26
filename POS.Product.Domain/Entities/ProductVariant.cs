@@ -17,6 +17,8 @@ namespace POS.Product.Domain.Entities
         public decimal Quantity { get; private set; }
         // Navigation
         public product Product { get; set; } = null!;
+
+        public Unit Unit { get; set; } = null!;
         public ICollection<ProductBarcode> Barcodes { get; set; }
             = new List<ProductBarcode>();
     }

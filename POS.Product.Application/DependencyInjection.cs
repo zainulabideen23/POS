@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using POS.Product.Application.Interfaces.BrandInterfaces;
 using POS.Product.Application.Interfaces.CategoryInterfaces;
+using POS.Product.Application.Interfaces.ProductInterfaces;
 using POS.Product.Application.Interfaces.UnitInterfaces;
 using POS.Product.Application.Services;
 
@@ -14,7 +15,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IUnitService,  UnitService>();
-
+        services.AddScoped<IProductService, ProductService>();
         return services;
     }
 }

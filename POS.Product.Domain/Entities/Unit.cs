@@ -20,8 +20,8 @@ namespace POS.Product.Domain.Entities
 
 
         // Navigation
-        public ICollection<ProductVariant> ProductsVaiants { get; set; }
-            = new List<ProductVariant>();
+        public ICollection<ProductVariant> ProductVariants { get; private set; }
+                = new List<ProductVariant>();
 
         private Unit() { }
 
@@ -52,14 +52,14 @@ namespace POS.Product.Domain.Entities
                     "Conversion factor must be greater than zero.");
 
             return new Unit(
-                new Guid(),
+                Guid.NewGuid(),
                 tenantId,
                 category,
                 name.Trim(),
                 shortName.Trim(),
                 conversionFactor,
-                false,
-                true);
+                true,
+                false);
         }
         public static Unit CreateSystem(Guid Id, UnitCategory category, string name, string shortName,decimal conversionFactor)
         {
