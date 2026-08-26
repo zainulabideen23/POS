@@ -3,6 +3,8 @@ using POS.Identity.Infrastructure;
 using POS.Identity.Application;
 using POS.Product.Application;
 using POS.Product.Infrastructure;
+using POS.Organization.Infrastructure;
+using POS.Organization.Application;
 
 
 
@@ -18,6 +20,10 @@ builder.Services.AddProductInfrastructure(builder.Configuration);
 //Identity
 builder.Services.AddIdentityApplication();
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
+
+//Organization
+builder.Services.AddOrganizationInfrastructure(builder.Configuration);
+builder.Services.ADDOrganizationApplication();
 
 //Shared
 builder.Services.AddSharedInfrastructure();
