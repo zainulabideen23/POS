@@ -1,4 +1,6 @@
-﻿using POS.Identity.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using POS.Identity.Application.Interfaces;
 using POS.Identity.Infrastructure.Data;
 using POS.Identity.Infrastructure.Repositories;
 
@@ -30,5 +32,10 @@ public class UnitOfWork : IUnitOfWork
     public async Task<int> SaveChangesAsync()
     {
         return await _db.SaveChangesAsync();
+    }
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _db.Database.BeginTransactionAsync();
     }
 }

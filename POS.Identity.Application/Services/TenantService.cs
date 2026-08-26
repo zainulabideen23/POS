@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using POS.Identity.Application.DTOs;
 using POS.Identity.Application.Interfaces;
 
@@ -34,30 +35,52 @@ public class TenantService
 
         return MapToResponse(tenant);
     }
-
-    public async Task<TenantResponseDto>
-        CreateAsync(CreateTenantDto dto)
+    public async Task<TenantResponseDto> CreateAsync(CreateTenantDto dto)
     {
-        var tenant = new Tenant
+        await using var transaction =
+            await _unitOfWork.BeginTransactionAsync();
+
+        try
         {
-            Name = dto.Name,
-            LegalName = dto.LegalName,
-            TaxNumber = dto.TaxNumber,
-            Email = dto.Email,
-            Phone = dto.Phone,
-            Address = dto.Address,
-            LogoUrl = dto.LogoUrl,
-            Currency = dto.Currency,
-            Timezone = dto.Timezone
-        };
+            var tenant = new Tenant
+            {
+                Name = dto.Name,
+                LegalName = dto.LegalName,
+                TaxNumber = dto.TaxNumber,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Address = dto.Address,
+                LogoUrl = dto.LogoUrl,
+                Currency = dto.Currency,
+                Timezone = dto.Timezone
+            };
 
-        await _unitOfWork.Tenants.AddAsync(tenant);
+            await _unitOfWork.Tenants.AddAsync(tenant);
+            await _unitOfWork.SaveChangesAsync();
 
-        await _unitOfWork.SaveChangesAsync();
+            var branch = new Branch
+            {
+                TenantId = tenant.Id,
+                Name = dto.BranchName,
+                Code = dto.BranchCode,
+                Phone = dto.Phone,
+                Email = dto.Email,
+                Address = dto.Address
+            };
 
-        return MapToResponse(tenant);
+            await _unitOfWork.Branches.AddAsync(branch);
+            await _unitOfWork.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+
+            return MapToResponse(tenant);
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
-
     public async Task<bool>
         UpdateAsync(Guid id, UpdateTenantDto dto)
     {

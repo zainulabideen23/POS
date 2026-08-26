@@ -17,6 +17,18 @@ public class BranchesController : ControllerBase
         _branchService = branchService;
     }
 
+    [HttpGet("tenant/{tenantName}/branches")]
+    public async Task<IActionResult> GetByTenantName(
+    string tenantName,
+    CancellationToken cancellationToken)
+    {
+        var branches = await _branchService
+            .GetByTenantNameAsync(tenantName, cancellationToken);
+
+        return Ok(branches);
+    }
+
+
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
@@ -26,7 +38,7 @@ public class BranchesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result =
@@ -56,7 +68,8 @@ public class BranchesController : ControllerBase
             result);
     }
 
-    [HttpPut("{id:int}")]
+
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(
         Guid id,
         UpdateBranchDto dto)
@@ -70,7 +83,7 @@ public class BranchesController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var deleted =

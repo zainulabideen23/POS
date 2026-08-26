@@ -126,4 +126,32 @@ public class BranchService
             UpdatedAt = branch.UpdatedAt
         };
     }
+
+    public async Task<IEnumerable<BranchResponseDto>> GetByTenantNameAsync(
+     string tenantName,
+     CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(tenantName))
+            throw new ArgumentException(
+                "Tenant name is required.",
+                nameof(tenantName));
+
+        var tenant = await _unitOfWork.Tenants
+            .GetByNameAsync(tenantName, cancellationToken);
+
+        if (tenant == null)
+            throw new KeyNotFoundException(
+                $"Tenant '{tenantName}' was not found.");
+
+        var branches = await _unitOfWork.Branches
+            .GetAllByTenantIdAsync(
+                tenant.Id,
+                cancellationToken);
+
+        if (branches == null || !branches.Any())
+            throw new KeyNotFoundException(
+                $"No branches were found for tenant '{tenantName}'.");
+
+        return branches.Select(MapToResponse);
+    }
 }
