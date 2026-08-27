@@ -22,4 +22,8 @@
     <ProjectReference Include="..\POS.Product.Domain\POS.Product.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

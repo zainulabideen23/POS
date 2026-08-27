@@ -78,10 +78,10 @@ namespace POS.Product.Infrastructure.Persistance.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Product -> Unit
-            builder.HasMany(x => x.Variants)
-                .WithOne(x => x.Product)
-                .HasForeignKey(x => x.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Unit)
+                 .WithMany()
+                  .HasForeignKey(x => x.UnitId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
             // Product -> ProductVariants
             builder.HasMany(x => x.Variants)

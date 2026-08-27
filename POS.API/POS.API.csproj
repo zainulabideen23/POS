@@ -38,6 +38,8 @@
     <ProjectReference Include="..\POS.Organization.Infrastructure\POS.Organization.Infrastructure.csproj" />
     <ProjectReference Include="..\POS.Product.Application\POS.Product.Application.csproj" />
     <ProjectReference Include="..\POS.Product.Infrastructure\POS.Product.Infrastructure.csproj" />
+    <ProjectReference Include="..\POS.Purchase.Application\POS.Purchase.Application.csproj" />
+    <ProjectReference Include="..\POS.Purchase.Infrastructure\POS.Purchase.Infrastructure.csproj" />
     <ProjectReference Include="..\POS.Shared.Application\POS.Shared.Application.csproj" />
     <ProjectReference Include="..\POS.Shared.Infrastructure\POS.Shared.Infrastructure.csproj" />
   </ItemGroup>

@@ -16,7 +16,6 @@ namespace POS.Product.Domain.Entities
 
         public Guid TenantId { get; private set; }
 
-
         public Category? ParentCategory { get; private set; }
 
         public ICollection<product> Products { get; private set; }

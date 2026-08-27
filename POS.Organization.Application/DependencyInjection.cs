@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using POS.Operations.Application.Services;
 using POS.Organization.Application.Interfaces;
 using POS.Organization.Application.Services;
 using System;
@@ -14,6 +15,7 @@ namespace POS.Organization.Application
         {
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IPOSRegisterService, POSRegisterService>();
+            services.AddScoped<IRegisterSessionService, RegisterSessionService>();
             return services;
         }
     }
