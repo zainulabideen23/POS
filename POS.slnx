@@ -23,6 +23,11 @@
     <Project Path="POS.Product.Domain/POS.Product.Domain.csproj" />
     <Project Path="POS.Product.Infrastructure/POS.Product.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/Modules/Purchase/">
+    <Project Path="POS.Pruchase.Domain/POS.Pruchase.Domain.csproj" Id="31bb2114-b2a7-46e0-a3a1-ec38908afea1" />
+    <Project Path="POS.Purchase.Application/POS.Purchase.Application.csproj" Id="a5b003dd-050c-41f6-a255-adddb5c73895" />
+    <Project Path="POS.Purchase.Infrastructure/POS.Purchase.Infrastructure.csproj" Id="4819235b-642c-4cb1-a5f2-1683f1601eb1" />
+  </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="POS.Shared.Application/POS.Shared.Application.csproj" Id="bc3bee89-4265-4573-b62e-af755bdbf902" />
     <Project Path="POS.Shared.Infrastructure/POS.Shared.Infrastructure.csproj" Id="ba587581-34c8-410e-894e-08d5051e4df7" />

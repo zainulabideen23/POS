@@ -152,6 +152,9 @@ namespace POS.Product.Infrastructure.Migrations
                     b.Property<Guid>("UnitId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UnitId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -160,6 +163,8 @@ namespace POS.Product.Infrastructure.Migrations
                         .IsUnique();
 
                     b.HasIndex("UnitId");
+
+                    b.HasIndex("UnitId1");
 
                     b.ToTable("ProductVariants", (string)null);
                 });
@@ -209,6 +214,9 @@ namespace POS.Product.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BrandId")
@@ -307,13 +315,19 @@ namespace POS.Product.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POS.Product.Domain.Entities.Unit", null)
-                        .WithMany("ProductsVaiants")
+                    b.HasOne("POS.Product.Domain.Entities.Unit", "Unit")
+                        .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("POS.Product.Domain.Entities.Unit", null)
+                        .WithMany("ProductVariants")
+                        .HasForeignKey("UnitId1");
+
                     b.Navigation("Product");
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("POS.Product.Domain.Entities.product", b =>
@@ -362,7 +376,7 @@ namespace POS.Product.Infrastructure.Migrations
 
             modelBuilder.Entity("POS.Product.Domain.Entities.Unit", b =>
                 {
-                    b.Navigation("ProductsVaiants");
+                    b.Navigation("ProductVariants");
                 });
 
             modelBuilder.Entity("POS.Product.Domain.Entities.product", b =>

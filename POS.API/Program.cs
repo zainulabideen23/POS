@@ -5,6 +5,7 @@ using POS.Product.Application;
 using POS.Product.Infrastructure;
 using POS.Organization.Infrastructure;
 using POS.Organization.Application;
+using POS.Purchase.Infrastructure;
 
 
 
@@ -24,6 +25,10 @@ builder.Services.AddIdentityInfrastructure(builder.Configuration);
 //Organization
 builder.Services.AddOrganizationInfrastructure(builder.Configuration);
 builder.Services.ADDOrganizationApplication();
+
+
+//Purchase
+builder.Services.AddPurchaseInfrastructure(builder.Configuration);
 
 //Shared
 builder.Services.AddSharedInfrastructure();

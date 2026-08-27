@@ -34,6 +34,12 @@ namespace POS.Product.Infrastructure.Persistance.Configurations
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // ProductVariant -> Unit
+            builder.HasOne(x => x.Unit)
+.WithMany()
+.HasForeignKey(x => x.UnitId)
+.OnDelete(DeleteBehavior.Restrict);
+
             builder.HasIndex(x => x.SKU)
                 .IsUnique();
         }

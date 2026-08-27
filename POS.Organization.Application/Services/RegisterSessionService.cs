@@ -15,8 +15,8 @@ namespace POS.Operations.Application.Services
 
         public RegisterSessionService(IUnitOfWork unitOfWork, ICurrentUser currentUser)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _unitOfWork = unitOfWork ;
+            _currentUser = currentUser ;
         }
 
         public async Task<IEnumerable<RegisterDropdownResponse>> GetAvailableRegistersAsync(CancellationToken cancellationToken = default)
