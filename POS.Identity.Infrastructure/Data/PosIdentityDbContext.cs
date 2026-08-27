@@ -7,7 +7,7 @@ using System.Reflection;
 namespace POS.Identity.Infrastructure.Data;
 
 // Note: Change the generic signature to include ApplicationRole
-public class PosIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+public class PosIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }

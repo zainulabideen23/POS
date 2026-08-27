@@ -151,7 +151,7 @@
             );
         }
     }
-    public async Task<string> LoginAsync(LoginRequest request)
+    public async Task<string?> LoginAsync(LoginRequest request)
     {
         // 1. Find user
         var user = await _userManager.FindByEmailAsync(request.Email);

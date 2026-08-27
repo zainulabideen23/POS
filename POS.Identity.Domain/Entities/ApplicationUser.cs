@@ -3,7 +3,7 @@
 
 namespace POS.Identity.Domain.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<Guid>
     {
          //User having key chain 
         //for netuserrole I add no navigation property but relationship

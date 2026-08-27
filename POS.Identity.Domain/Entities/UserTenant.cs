@@ -7,7 +7,7 @@ namespace POS.Identity.Domain.Entities
     //junction table between user and tenant
     public class UserTenant
     {
-        public string UserId { get; set; } = string.Empty;
+        public Guid UserId { get; set; } 
         public ApplicationUser User { get; set; } = null!;
 
         public Guid TenantId { get; set; }

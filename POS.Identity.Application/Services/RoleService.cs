@@ -84,7 +84,7 @@ namespace POS.Identity.Application.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var user = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (user == null)
             {

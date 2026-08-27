@@ -6,7 +6,7 @@ namespace POS.Identity.Application.DTOs.Roles
 {
     public class RoleResponse
     {
-        public required string Id { get; set; }
+        public required Guid Id { get; set; }
         public required string Name { get; set; }
     }
 }
