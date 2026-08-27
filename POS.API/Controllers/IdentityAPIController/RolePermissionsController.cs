@@ -18,7 +18,7 @@ namespace POS.API.Controllers
 
         [HttpPost("{roleId}/permissions")]
         public async Task<IActionResult> AssignPermission(
-            string roleId,
+            Guid roleId,
             AssignPermissionRequest request,
             CancellationToken cancellationToken)
         {
@@ -54,7 +54,7 @@ namespace POS.API.Controllers
 
         [HttpGet("{roleId}/permissions")]
         public async Task<IActionResult> GetPermissions(
-            string roleId,
+            Guid roleId,
             CancellationToken cancellationToken)
         {
             var permissions =
@@ -69,7 +69,7 @@ namespace POS.API.Controllers
         [HttpDelete(
             "{roleId}/permissions/{permissionId:int}")]
         public async Task<IActionResult> RemovePermission(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken)
         {

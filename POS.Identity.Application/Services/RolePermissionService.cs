@@ -16,7 +16,7 @@ namespace POS.Identity.Application.Services
          
 
         public async Task AssignPermissionAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default)
         {
@@ -63,7 +63,7 @@ namespace POS.Identity.Application.Services
 
         public async Task<IEnumerable<PermissionDto>>
     GetPermissionsByRoleAsync(
-        string roleId,
+        Guid roleId,
         CancellationToken cancellationToken = default)
         {
             var rolePermissions =
@@ -81,7 +81,7 @@ namespace POS.Identity.Application.Services
                 });
         }
         public async Task RemovePermissionAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default)
         {

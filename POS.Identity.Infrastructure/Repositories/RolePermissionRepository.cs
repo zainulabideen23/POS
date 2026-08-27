@@ -17,7 +17,7 @@ namespace POS.Identity.Infrastructure.Repositories
         }
 
         public async Task<bool> ExistsAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default)
         {
@@ -38,7 +38,7 @@ namespace POS.Identity.Infrastructure.Repositories
         }
 
         public async Task RemoveAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default)
         {
@@ -58,7 +58,7 @@ namespace POS.Identity.Infrastructure.Repositories
 
         public async Task<IEnumerable<RolePermission>>
             GetByRoleIdAsync(
-                string roleId,
+                Guid roleId,
                 CancellationToken cancellationToken = default)
         {
             return await _context.RolePermissions

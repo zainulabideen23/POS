@@ -5,7 +5,7 @@ namespace POS.Identity.Application.Interfaces
     public interface IRolePermissionRepository
     {
         Task<bool> ExistsAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default);
 
@@ -14,12 +14,12 @@ namespace POS.Identity.Application.Interfaces
             CancellationToken cancellationToken = default);
 
         Task RemoveAsync(
-            string roleId,
+            Guid roleId,
             int permissionId,
             CancellationToken cancellationToken = default);
 
         Task<IEnumerable<RolePermission>> GetByRoleIdAsync(
-            string roleId,
+            Guid roleId,
             CancellationToken cancellationToken = default);
 
         Task SaveChangesAsync(

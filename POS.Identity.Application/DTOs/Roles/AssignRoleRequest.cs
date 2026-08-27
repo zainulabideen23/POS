@@ -6,7 +6,7 @@ namespace POS.Identity.Application.DTOs.Roles
 {
     public class AssignRoleRequest
     {
-        public required string UserId { get; set; }
+        public required Guid UserId { get; set; }
         public required string RoleName { get; set; }
     }
 }

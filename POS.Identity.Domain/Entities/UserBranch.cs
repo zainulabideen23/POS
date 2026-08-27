@@ -6,7 +6,7 @@ namespace POS.Identity.Domain.Entities
 {
     public class UserBranch
     {
-        public string UserId { get; set; } = string.Empty;
+        public Guid UserId { get; set; } 
         public ApplicationUser User { get; set; } = null!;
 
         public Guid BranchId { get; set; }
